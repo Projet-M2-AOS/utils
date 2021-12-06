@@ -1,0 +1,242 @@
+version: '3.1'
+
+services:
+#region Micro-service Products
+  micro-products:
+    image: micro-products
+    container_name: micro-products
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      - micro-products-db
+    environment:
+      - MONGO_URL=mongodb://root:root@micro-products-db:27017/products?authSource=admin
+
+  micro-products-db:
+    image: mongo:latest
+    container_name: micro-products-db
+    restart: always
+    ports:
+        - 27001:27017
+    environment: 
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INIT_DATABASE: products
+
+  micro-products-ui-db:
+    image: mongo-express:latest
+    container_name: micro-products-ui-db
+    restart: always
+    ports:
+        - 8081:8081
+    environment:
+        ME_CONFIG_MONGODB_SERVER: micro-products-db
+        ME_CONFIG_MONGODB_PORT: 27017
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+        ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    depends_on: 
+        - micro-products-db
+#endregion Micro-service Comments
+
+#region Micro-service Comments
+  micro-comments:
+    image: micro-comments
+    container_name: micro-comments
+    restart: always
+    ports:
+      - 3002:3002
+    depends_on:
+      - micro-comments-db
+    environment:
+      - MONGO_URL=mongodb://root:root@micro-comments-db:27017/comments?authSource=admin
+
+  micro-comments-db:
+    image: mongo:latest
+    hostname: micro-comments-db
+    container_name: micro-comments-db
+    restart: always
+    ports:
+        - 27002:27017
+    environment: 
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INIT_DATABASE: comments
+
+  micro-comments-ui-db:
+    image: mongo-express:latest
+    container_name: micro-comments-ui-db
+    restart: always
+    ports:
+        - 8082:8081
+    environment:
+        ME_CONFIG_MONGODB_SERVER: micro-comments-db
+        ME_CONFIG_MONGODB_PORT: 27017
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+        ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    depends_on: 
+        - micro-products-db
+#endregion Micro-service Comments
+
+#region Micro-service Product-List
+  micro-product-list:
+    image: micro-product-list
+    container_name: micro-product-list
+    restart: always
+    ports:
+      - 3003:3003
+    depends_on:
+      - micro-product-list-db
+    environment:
+      - MONGO_URL=mongodb://root:root@micro-product-list-db:27017/product-lists?authSource=admin
+
+  micro-product-list-db:
+    image: mongo:latest
+    hostname: micro-product-list-db
+    container_name: micro-product-list-db
+    restart: always
+    ports:
+        - 27003:27017
+    environment: 
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INIT_DATABASE: product-lists
+
+  micro-product-list-ui-db:
+    image: mongo-express:latest
+    container_name: micro-product-list-ui-db
+    restart: always
+    ports:
+        - 8083:8081
+    environment:
+        ME_CONFIG_MONGODB_SERVER: micro-product-lists-db
+        ME_CONFIG_MONGODB_PORT: 27017
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+        ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    depends_on: 
+        - micro-product-lists-db
+#endregion Micro-service Product-List
+
+#region Micro-service User
+  micro-user:
+    image: micro-user
+    hostname: micro-user
+    container_name: micro-user
+    restart: always
+    ports:
+      - 3004:3004
+    depends_on:
+      - mongo-user-db
+    environment:
+      - MONGO_URL=mongodb://root:root@micro-user-db:27017/users?authSource=admin
+
+  micro-user-db:
+    image: mongo:latest
+    hostname: micro-user-db
+    container_name: micro-user-db
+    restart: always
+    ports:
+        - 27004:27017
+    environment: 
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INIT_DATABASE: users
+
+  micro-user-ui-db:
+      image: mongo-express:latest
+      container_name: micro-user-ui-db
+      restart: always
+      ports:
+          - 8084:8081
+      environment:
+          ME_CONFIG_MONGODB_SERVER: micro-user-db
+          ME_CONFIG_MONGODB_PORT: 27017
+          ME_CONFIG_MONGODB_ADMINUSERNAME: root
+          ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      depends_on: 
+          - micro-user-db
+#endregion Micro-service User
+
+#region Micro-service Rating
+  micro-rating:
+    image: micro-rating
+    container_name: micro-rating
+    restart: always
+    ports:
+      - 3005:3005
+    depends_on:
+      - micro-rating-db
+    environment:
+      - MONGO_URL=mongodb://root:root@micro-rating-db:27017
+
+  micro-rating-db:
+    image: mongo:latest
+    hostname: micro-rating-db
+    container_name: micro-rating-db
+    restart: always
+    ports:
+        - 27005:27017
+    environment: 
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INIT_DATABASE: ratings
+
+  micro-rating-ui-db:
+      image: mongo-express:latest
+      container_name: micro-rating-ui-db
+      restart: always
+      ports:
+          - 8085:8081
+      environment:
+          ME_CONFIG_MONGODB_SERVER: micro-rating-db
+          ME_CONFIG_MONGODB_PORT: 27017
+          ME_CONFIG_MONGODB_ADMINUSERNAME: root
+          ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      depends_on: 
+          - micro-rating-db
+#endregion Micro-service Rating
+
+#region Micro-service Order
+  micro-order:
+    image: micro-order
+    container_name: micro-order
+    restart: always
+    ports:
+      - 3006:3006
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://micro-order-db:27017/orders
+      - MONGO_USER=root
+      - MONGO_PASSWORD=root
+      - DB=orders
+      - PORT=3006
+      - APP_ENV=development
+
+  micro-order-db:
+    image: mongo:latest
+    hostname: micro-order-db
+    container_name: micro-order-db
+    restart: always
+    ports:
+        - 27006:27017
+    environment: 
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INIT_DATABASE: orders
+
+  micro-order-ui-db:
+      image: mongo-express:latest
+      container_name: micro-order-ui-db
+      restart: always
+      ports:
+          - 8086:8081
+      environment:
+          ME_CONFIG_MONGODB_SERVER: micro-order-db
+          ME_CONFIG_MONGODB_PORT: 27017
+          ME_CONFIG_MONGODB_ADMINUSERNAME: root
+          ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      depends_on: 
+          - micro-order-db
+#endregion Micro-service Order
+
