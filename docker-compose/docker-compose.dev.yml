@@ -53,7 +53,6 @@ services:
 
   micro-comments-db:
     image: mongo:latest
-    hostname: micro-comments-db
     container_name: micro-comments-db
     restart: always
     ports:
@@ -92,7 +91,6 @@ services:
 
   micro-product-list-db:
     image: mongo:latest
-    hostname: micro-product-list-db
     container_name: micro-product-list-db
     restart: always
     ports:
@@ -120,7 +118,6 @@ services:
 #region Micro-service User
   micro-user:
     image: micro-user
-    hostname: micro-user
     container_name: micro-user
     restart: always
     ports:
@@ -132,7 +129,6 @@ services:
 
   micro-user-db:
     image: mongo:latest
-    hostname: micro-user-db
     container_name: micro-user-db
     restart: always
     ports:
@@ -171,7 +167,6 @@ services:
 
   micro-rating-db:
     image: mongo:latest
-    hostname: micro-rating-db
     container_name: micro-rating-db
     restart: always
     ports:
@@ -215,7 +210,6 @@ services:
 
   micro-order-db:
     image: mongo:latest
-    hostname: micro-order-db
     container_name: micro-order-db
     restart: always
     ports:
