@@ -35,12 +35,12 @@ else
     echo "${RED}micro-products image is not available, build failed !\n${NC}"
 fi
 
-echo "${GREEN}Building micro-product-list${NC}"
-docker build ./micro-product-lists -t micro-product-list 2>&1> /dev/null
+echo "${GREEN}Building micro-product-lists${NC}"
+docker build ./micro-product-lists -t micro-product-lists 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}micro-product-list image is available !\n${NC}"
+    echo "${GREEN}micro-product-lists image is available !\n${NC}"
 else
-    echo "${RED}micro-product-list image is not available, build failed !\n${NC}"
+    echo "${RED}micro-product-lists image is not available, build failed !\n${NC}"
 fi
 
 echo "${GREEN}Building micro-comments${NC}"

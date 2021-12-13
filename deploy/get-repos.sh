@@ -36,12 +36,12 @@ else
     echo "${RED}Micro-products download failed !\n${NC}"
 fi
 
-echo "Downloading micro-product-list${NC}"
+echo "Downloading micro-product-lists${NC}"
 git clone https://github.com/Projet-M2-AOS/micro-product-lists.git 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}Micro-product-list downloaded !\n${NC}"
+    echo "${GREEN}Micro-product-lists downloaded !\n${NC}"
 else
-    echo "${RED}Micro-product-list download failed !\n${NC}"
+    echo "${RED}Micro-product-lists download failed !\n${NC}"
 fi
 
 echo "Downloading micro-comments${NC}"
