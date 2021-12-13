@@ -4,28 +4,28 @@ NC=$'\e[0m'
 
 echo "${GREEN}Downloading repos...\n${NC}"
 
-echo "${GREEN}Downloading micro-rating...${NC}"
-git clone https://github.com/Projet-M2-AOS/micro-rating.git 2>&1> /dev/null
+echo "${GREEN}Downloading micro-ratings...${NC}"
+git clone https://github.com/Projet-M2-AOS/micro-ratings.git 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}Micro-rating downloaded !\n${NC}"
+    echo "${GREEN}Micro-ratings downloaded !\n${NC}"
 else
-    echo "${RED}Micro-rating download failed !\n${NC}"
+    echo "${RED}Micro-ratings download failed !\n${NC}"
 fi
 
-echo "${GREEN}Downloading micro-order...${NC}"
-git clone https://github.com/Projet-M2-AOS/micro-order.git 2>&1> /dev/null
+echo "${GREEN}Downloading micro-orders...${NC}"
+git clone https://github.com/Projet-M2-AOS/micro-orders.git 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}Micro-order downloaded !\n${NC}"
+    echo "${GREEN}Micro-orders downloaded !\n${NC}"
 else
-    echo "${RED}Micro-order download failed !\n${NC}"
+    echo "${RED}Micro-orders download failed !\n${NC}"
 fi
 
-echo "${GREEN}Downloading micro-user...${NC}"
-git clone https://github.com/Projet-M2-AOS/micro-user.git  2>&1> /dev/null
+echo "${GREEN}Downloading micro-users...${NC}"
+git clone https://github.com/Projet-M2-AOS/micro-users.git  2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}Micro-user downloaded !\n${NC}"
+    echo "${GREEN}Micro-users downloaded !\n${NC}"
 else
-    echo "${RED}Micro-user download failed !\n${NC}"
+    echo "${RED}Micro-users download failed !\n${NC}"
 fi
 
 echo "${GREEN}Downloading micro-products...${NC}"

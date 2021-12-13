@@ -4,28 +4,28 @@ NC=$'\e[0m'
 
 echo "${GREEN}Building docker image of repos...${NC}"
 
-echo "${GREEN}Building micro-rating...${NC}"
-docker build ./micro-rating -t micro-rating 2>&1> /dev/null
+echo "${GREEN}Building micro-ratings...${NC}"
+docker build ./micro-ratings -t micro-ratings 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}micro-rating image is available !\n${NC}"
+    echo "${GREEN}micro-ratings image is available !\n${NC}"
 else
-    echo "${RED}micro-rating image is not available, build failed !\n${NC}"
+    echo "${RED}micro-ratings image is not available, build failed !\n${NC}"
 fi
 
-echo "${GREEN}Building micro-order...${NC}"
-docker build ./micro-order -t micro-order 2>&1> /dev/null
+echo "${GREEN}Building micro-orders...${NC}"
+docker build ./micro-orders -t micro-orders 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}micro-order image is available !\n${NC}"
+    echo "${GREEN}micro-orders image is available !\n${NC}"
 else
-    echo "${RED}micro-order image is not available, build failed !\n${NC}"
+    echo "${RED}micro-orders image is not available, build failed !\n${NC}"
 fi
 
-echo "${GREEN}Building micro-user...${NC}"
-docker build ./micro-user -t micro-user 2>&1> /dev/null
+echo "${GREEN}Building micro-users...${NC}"
+docker build ./micro-users -t micro-users 2>&1> /dev/null
 if [ $? -eq 0 ]; then
-    echo "${GREEN}micro-user image is available !\n${NC}"
+    echo "${GREEN}micro-users image is available !\n${NC}"
 else
-    echo "${RED}micro-user image is not available, build failed !\n${NC}"
+    echo "${RED}micro-users image is not available, build failed !\n${NC}"
 fi
 echo "${GREEN}Building micro-products...${NC}"
 docker build ./micro-products -t micro-products 2>&1> /dev/null
