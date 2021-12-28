@@ -1,28 +1,43 @@
 version: '3.1'
-
+networks:
+  default:
+    name: kong-net
 services:
+#region Kong Gateway
+  kong:
+    image: kong:alpine
+    hostname: kong
+    container_name: kong
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_PROXY_ACCESS_LOG: '/dev/stdout'
+      KONG_ADMIN_ACCESS_LOG: '/dev/stdout'
+      KONG_PROXY_ERROR_LOG: '/dev/stderr'
+      KONG_ADMIN_ERROR_LOG: '/dev/stderr'
+      KONG_ADMIN_LISTEN: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+      KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
+    command: "kong start"
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+    volumes:
+    - ./config:/opt/kong
+#endregion Kong Gateway
+
 #region Micro-service Products
   micro-products:
     image: micro-products
     container_name: micro-products
+    hostname: micro-products
     restart: always
     ports:
       - 3001:3001
     depends_on:
-      - micro-products-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-products-db:27017/products?authSource=admin
-
-  micro-products-db:
-    image: mongo:latest
-    container_name: micro-products-db
-    restart: always
-    ports:
-        - 27001:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: products
+      - MONGO_URL=mongodb://root:root@mongo:27017/products?authSource=admin
 #endregion Micro-service Comments
 
 #region Micro-service Comments
@@ -33,119 +48,76 @@ services:
     ports:
       - 3002:3002
     depends_on:
-      - micro-comments-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-comments-db:27017/comments?authSource=admin
-
-  micro-comments-db:
-    image: mongo:latest
-    container_name: micro-comments-db
-    restart: always
-    ports:
-        - 27002:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: comments
+      - MONGO_URL=mongodb://root:root@mongo:27017/comments?authSource=admin
 #endregion Micro-service Comments
 
 #region Micro-service Product-List
-  micro-product-list:
-    image: micro-product-list
-    container_name: micro-product-list
+  micro-product-lists:
+    image: micro-product-lists
+    container_name: micro-product-lists
     restart: always
     ports:
       - 3003:3003
     depends_on:
-      - micro-product-list-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-product-list-db:27017/product-lists?authSource=admin
-
-  micro-product-list-db:
-    image: mongo:latest
-    container_name: micro-product-list-db
-    restart: always
-    ports:
-        - 27003:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: product-lists
+      - MONGO_URL=mongodb://root:root@mongo:27017/product-lists?authSource=admin
 #endregion Micro-service Product-List
 
 #region Micro-service User
-  micro-user:
-    image: micro-user
-    container_name: micro-user
+  micro-users:
+    image: micro-users
+    container_name: micro-users
     restart: always
     ports:
       - 3004:3004
     depends_on:
-      - mongo-user-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-user-db:27017/users?authSource=admin
-
-  micro-user-db:
-    image: mongo:latest
-    container_name: micro-user-db
-    restart: always
-    ports:
-        - 27004:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: users
+      - MONGO_URL=mongodb://root:root@mongo:27017/users?authSource=admin
 #endregion Micro-service User
 
 #region Micro-service Rating
-  micro-rating:
-    image: micro-rating
-    container_name: micro-rating
+  micro-ratings:
+    image: micro-ratings
+    container_name: micro-ratings
     restart: always
     ports:
       - 3005:3005
     depends_on:
-      - micro-rating-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-rating-db:27017
-
-  micro-rating-db:
-    image: mongo:latest
-    container_name: micro-rating-db
-    restart: always
-    ports:
-        - 27005:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: ratings
+      - MONGO_URL=mongodb://root:root@mongo:27017
 #endregion Micro-service Rating
 
 #region Micro-service Order
-  micro-order:
-    image: micro-order
-    container_name: micro-order
+  micro-orders:
+    image: micro-orders
+    container_name: micro-orders
     restart: always
     ports:
       - 3006:3006
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://micro-order-db:27017/orders
+      - MONGO_URI=mongodb://mongo:27017/orders
       - MONGO_USER=root
       - MONGO_PASSWORD=root
       - DB=orders
       - PORT=3006
       - APP_ENV=development
+#endregion Micro-service Order
 
-  micro-order-db:
+#region Database
+  mongo:
     image: mongo:latest
-    container_name: micro-order-db
+    container_name: mongo
     restart: always
     ports:
-        - 27006:27017
+        - 27017:27017
     environment: 
         MONGO_INITDB_ROOT_USERNAME: root
         MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: orders
-#endregion Micro-service Order
+#endregion Database

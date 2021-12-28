@@ -1,42 +1,43 @@
 version: '3.1'
-
+networks:
+  default:
+    name: kong-net
 services:
+#region Kong Gateway
+  kong:
+    image: kong:alpine
+    hostname: kong
+    container_name: kong
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_PROXY_ACCESS_LOG: '/dev/stdout'
+      KONG_ADMIN_ACCESS_LOG: '/dev/stdout'
+      KONG_PROXY_ERROR_LOG: '/dev/stderr'
+      KONG_ADMIN_ERROR_LOG: '/dev/stderr'
+      KONG_ADMIN_LISTEN: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+      KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
+    command: "kong start"
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+    volumes:
+    - ./config:/opt/kong
+#endregion Kong Gateway
+
 #region Micro-service Products
   micro-products:
     image: micro-products
     container_name: micro-products
+    hostname: micro-products
     restart: always
     ports:
       - 3001:3001
     depends_on:
-      - micro-products-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-products-db:27017/products?authSource=admin
-
-  micro-products-db:
-    image: mongo:4.4.10
-    container_name: micro-products-db
-    restart: always
-    ports:
-        - 27001:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: products
-
-  micro-products-ui-db:
-    image: mongo-express:latest
-    container_name: micro-products-ui-db
-    restart: always
-    ports:
-        - 8081:8081
-    environment:
-        ME_CONFIG_MONGODB_SERVER: micro-products-db
-        ME_CONFIG_MONGODB_PORT: 27017
-        ME_CONFIG_MONGODB_ADMINUSERNAME: root
-        ME_CONFIG_MONGODB_ADMINPASSWORD: root
-    depends_on: 
-        - micro-products-db
+      - MONGO_URL=mongodb://root:root@mongo:27017/products?authSource=admin
 #endregion Micro-service Comments
 
 #region Micro-service Comments
@@ -47,37 +48,12 @@ services:
     ports:
       - 3002:3002
     depends_on:
-      - micro-comments-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-comments-db:27017/comments?authSource=admin
-
-  micro-comments-db:
-    image: mongo:4.4.10
-    container_name: micro-comments-db
-    restart: always
-    ports:
-        - 27002:27017
-    environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: comments
-
-  micro-comments-ui-db:
-    image: mongo-express:latest
-    container_name: micro-comments-ui-db
-    restart: always
-    ports:
-        - 8082:8081
-    environment:
-        ME_CONFIG_MONGODB_SERVER: micro-comments-db
-        ME_CONFIG_MONGODB_PORT: 27017
-        ME_CONFIG_MONGODB_ADMINUSERNAME: root
-        ME_CONFIG_MONGODB_ADMINPASSWORD: root
-    depends_on: 
-        - micro-products-db
+      - MONGO_URL=mongodb://root:root@mongo:27017/comments?authSource=admin
 #endregion Micro-service Comments
 
-#region Micro-service Product-Lists
+#region Micro-service Product-List
   micro-product-lists:
     image: micro-product-lists
     container_name: micro-product-lists
@@ -85,37 +61,12 @@ services:
     ports:
       - 3003:3003
     depends_on:
-      - micro-product-lists-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-product-lists-db:27017/product-lists?authSource=admin
-
-  micro-product-lists-db:
-    image: mongo:4.4.10
-    container_name: micro-product-lists-db
-    restart: always
-    ports:
-        - 27003:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: product-lists
-
-  micro-product-lists-ui-db:
-    image: mongo-express:latest
-    container_name: micro-product-lists-ui-db
-    restart: always
-    ports:
-        - 8083:8081
-    environment:
-        ME_CONFIG_MONGODB_SERVER: micro-product-lists-db
-        ME_CONFIG_MONGODB_PORT: 27017
-        ME_CONFIG_MONGODB_ADMINUSERNAME: root
-        ME_CONFIG_MONGODB_ADMINPASSWORD: root
-    depends_on: 
-        - micro-product-lists-db
+      - MONGO_URL=mongodb://root:root@mongo:27017/product-lists?authSource=admin
 #endregion Micro-service Product-List
 
-#region Micro-service Users
+#region Micro-service User
   micro-users:
     image: micro-users
     container_name: micro-users
@@ -123,37 +74,12 @@ services:
     ports:
       - 3004:3004
     depends_on:
-      - mongo-users-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-users-db:27017/users?authSource=admin
-
-  micro-users-db:
-    image: mongo:4.4.10
-    container_name: micro-users-db
-    restart: always
-    ports:
-        - 27004:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: users
-
-  micro-users-ui-db:
-      image: mongo-express:latest
-      container_name: micro-users-ui-db
-      restart: always
-      ports:
-          - 8084:8081
-      environment:
-          ME_CONFIG_MONGODB_SERVER: micro-users-db
-          ME_CONFIG_MONGODB_PORT: 27017
-          ME_CONFIG_MONGODB_ADMINUSERNAME: root
-          ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      depends_on: 
-          - micro-users-db
+      - MONGO_URL=mongodb://root:root@mongo:27017/users?authSource=admin
 #endregion Micro-service User
 
-#region Micro-service Ratings
+#region Micro-service Rating
   micro-ratings:
     image: micro-ratings
     container_name: micro-ratings
@@ -161,37 +87,12 @@ services:
     ports:
       - 3005:3005
     depends_on:
-      - micro-ratings-db
+      - mongo
     environment:
-      - MONGO_URL=mongodb://root:root@micro-ratings-db:27017
-
-  micro-ratings-db:
-    image: mongo:4.4.10
-    container_name: micro-ratings-db
-    restart: always
-    ports:
-        - 27005:27017
-    environment: 
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: ratings
-
-  micro-ratings-ui-db:
-      image: mongo-express:latest
-      container_name: micro-ratings-ui-db
-      restart: always
-      ports:
-          - 8085:8081
-      environment:
-          ME_CONFIG_MONGODB_SERVER: micro-ratings-db
-          ME_CONFIG_MONGODB_PORT: 27017
-          ME_CONFIG_MONGODB_ADMINUSERNAME: root
-          ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      depends_on: 
-          - micro-ratings-db
+      - MONGO_URL=mongodb://root:root@mongo:27017
 #endregion Micro-service Rating
 
-#region Micro-service Orders
+#region Micro-service Order
   micro-orders:
     image: micro-orders
     container_name: micro-orders
@@ -201,36 +102,36 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://micro-orders-db:27017/orders
+      - MONGO_URI=mongodb://mongo:27017/orders
       - MONGO_USER=root
       - MONGO_PASSWORD=root
       - DB=orders
       - PORT=3006
       - APP_ENV=development
+#endregion Micro-service Order
 
-  micro-orders-db:
-    image: mongo:4.4.10
-    container_name: micro-orders-db
+#region Database
+  mongo:
+    image: mongo:latest
+    container_name: mongo
     restart: always
     ports:
-        - 27006:27017
+        - 27017:27017
     environment: 
         MONGO_INITDB_ROOT_USERNAME: root
         MONGO_INITDB_ROOT_PASSWORD: root
-        MONGO_INIT_DATABASE: orders
 
-  micro-orders-ui-db:
-      image: mongo-express:latest
-      container_name: micro-orders-ui-db
-      restart: always
-      ports:
-          - 8086:8081
-      environment:
-          ME_CONFIG_MONGODB_SERVER: micro-orders-db
-          ME_CONFIG_MONGODB_PORT: 27017
-          ME_CONFIG_MONGODB_ADMINUSERNAME: root
-          ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      depends_on: 
-          - micro-orders-db
-#endregion Micro-service Order
-
+  mongo-ui:
+    image: mongo-express:latest
+    container_name: mongo-ui
+    restart: always
+    ports:
+        - 8081:8081
+    environment:
+        ME_CONFIG_MONGODB_SERVER: mongo
+        ME_CONFIG_MONGODB_PORT: 27017
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+        ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    depends_on: 
+        - mmongo
+#endregion Database

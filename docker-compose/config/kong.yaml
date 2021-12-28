@@ -1,0 +1,46 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: micro-products-service
+    url: http://micro-products:3001/products
+    routes:
+      - name: micro-products-service-routes
+        paths:
+          - /products #endpoint :8000/products
+        strip_path: true
+  - name: micro-comments-service
+    url: http://micro-comments:3002/comments
+    routes:
+      - name: micro-comments-service-routes
+        paths:
+          - /comments #endpoint :8000/comments
+        strip_path: true
+  - name: micro-product-lists-service
+    url: http://micro-product-lists:3003/product-lists
+    routes:
+      - name: micro-product-lists-service-routes
+        paths:
+          - /product-lists #endpoint :8000/product-lists
+        strip_path: true
+  - name: micro-users-service
+    url: http://micro-users:3004/users
+    routes:
+      - name: micro-users-service-routes
+        paths:
+          - /users #endpoint :8000/users
+        strip_path: true
+  - name: micro-ratings-service
+    url: http://micro-ratings:3005/ratings
+    routes:
+      - name: micro-ratings-service-routes
+        paths:
+          - /ratings? #endpoint :8000/ratings
+        strip_path: true
+  - name: micro-orders-service
+    url: http://micro-orders:3006/orders
+    routes:
+      - name: micro-orders-service-routes
+        paths:
+          - /orders #endpoint :8000/orders
+        strip_path: true
