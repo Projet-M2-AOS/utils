@@ -1,25 +1,41 @@
 import superagent from "superagent";
 
-const deleteUsers = true;
-const deleteProducts = true;
+const ressources = [
+  {
+    name: "users",
+    deleteAll: true,
+  },
+  {
+    name: "products",
+    deleteAll: true,
+  },
+  {
+    name: "comments",
+    deleteAll: true,
+  },
+  {
+    name: "ratings",
+    deleteAll: true,
+  },
+  {
+    name: "lists",
+    deleteAll: false,
+  },
+  {
+    name: "orders",
+    deleteAll: true,
+  },
+];
 
 (async () => {
-  if (deleteUsers) {
-    const userIDs = await superagent
-      .get("http://localhost:8000/users")
-      .then((res) => res.body.map((user) => user._id));
+  const ressourcesWithDeleteAll = ressources.filter((e) => e.deleteAll);
+  for (const { name } of ressourcesWithDeleteAll) {
+    const allIDs = await superagent
+      .get(`http://localhost:8000/${name}`)
+      .then((res) => res.body.map((element) => element._id));
 
-    for (const id of userIDs) {
-      await superagent.delete(`http://localhost:8000/users/${id}`);
-    }
-  }
-  if (deleteProducts) {
-    const productIDs = await superagent
-      .get("http://localhost:8000/products")
-      .then((res) => res.body.map((product) => product._id));
-
-    for (const id of productIDs) {
-      await superagent.delete(`http://localhost:8000/products/${id}`);
+    for (const id of allIDs) {
+      await superagent.delete(`http://localhost:8000/${name}/${id}`);
     }
   }
 })();
