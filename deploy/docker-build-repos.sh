@@ -51,5 +51,13 @@ else
     echo "${RED}micro-comments image is not available, build failed !\n${NC}"
 fi
 
+echo "${GREEN}Building web${NC}"
+docker build ./web -t web 2>&1> /dev/null
+if [ $? -eq 0 ]; then
+    echo "${GREEN}web image is available !\n${NC}"
+else
+    echo "${RED}web image is not available, build failed !\n${NC}"
+fi
+
 echo "${GREEN}Docker images builded !${NC}"
 

@@ -52,4 +52,12 @@ else
     echo "${RED}Micro-comments download failed !\n${NC}"
 fi
 
+echo "Downloading web${NC}"
+git clone https://github.com/Projet-M2-AOS/web.git 2>&1> /dev/null
+if [ $? -eq 0 ]; then
+    echo "${GREEN}Web downloaded !\n${NC}"
+else
+    echo "${RED}Web download failed !\n${NC}"
+fi
+
 echo "${GREEN}Repos downloaded !${NC}"
