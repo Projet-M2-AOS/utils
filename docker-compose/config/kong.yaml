@@ -47,8 +47,7 @@ services:
 plugins:
 - name: cors
   config: 
-    origins:
-    - http://aos-shop.ovh/
+    origins: *
     methods:
     - GET
     - POST
