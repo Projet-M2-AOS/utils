@@ -140,7 +140,7 @@ services:
     container_name: web
     restart: always
     environment:
-      - NEXTAUTH_URL=http://localhost:80
+      - NEXTAUTH_URL=https://www.aos-shop.ovh
       - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8000
       - JWT_SECRET=B9827D4B21956C48A68C0DF76EAEE7CFA1350A7F27A080E01273FD71E5D23003
       - VIRTUAL_HOST=www.aos-shop.ovh
