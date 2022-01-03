@@ -1,0 +1,23 @@
+{
+  "inputs": [
+    {
+      "inputURL": "http://localhost:3001/docs-json"
+    },
+    {
+      "inputURL": "http://localhost:3002/docs-json"
+    },
+    {
+      "inputURL": "http://localhost:3003/docs-json"
+    },
+    {
+      "inputURL": "http://localhost:3004/docs-json"
+    },
+    {
+      "inputURL": "http://localhost:3005/docs-json"
+    },
+    {
+      "inputURL": "http://localhost:3006/docs-json"
+    }
+  ],
+  "output": "./swagger.json"
+}
