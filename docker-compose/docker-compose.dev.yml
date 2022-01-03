@@ -111,16 +111,40 @@ services:
 #endregion Micro-service Order
 
 #region Front
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   web:
     image: web
     container_name: web
     restart: always
-    ports:
-      - 80:80
     environment:
       - NEXTAUTH_URL=http://localhost:80
       - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8000
       - JWT_SECRET=B9827D4B21956C48A68C0DF76EAEE7CFA1350A7F27A080E01273FD71E5D23003
+      - VIRTUAL_HOST=www.aos-shop.ovh
+      - LETSENCRYPT_HOST=www.aos-shop.ovh
 #endregion Front
 
 #region Database

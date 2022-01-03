@@ -150,8 +150,8 @@ services:
       - NEXTAUTH_URL=http://localhost:80
       - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8000
       - JWT_SECRET=B9827D4B21956C48A68C0DF76EAEE7CFA1350A7F27A080E01273FD71E5D23003
-      - VIRTUAL_HOST=aos-shop.ovh
-      - LETSENCRYPT_HOST=aos-shop.ovh
+      - VIRTUAL_HOST=www.aos-shop.ovh
+      - LETSENCRYPT_HOST=www.aos-shop.ovh
 #endregion Front
 
 #region Database
