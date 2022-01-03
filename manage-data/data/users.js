@@ -3,7 +3,7 @@ export default [
     _id: "61ce26eefc13ae417b002295",
     firstName: "Admin",
     lastName: "Admin",
-    mail: "admin",
+    mail: "admin@aos-shop.ovh",
     password: "admin",
     role: "ADMIN",
     birthDate: "1999-09-18T21:21:33Z",
