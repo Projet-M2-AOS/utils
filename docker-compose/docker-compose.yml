@@ -146,8 +146,6 @@ services:
     image: web
     container_name: web
     restart: always
-    ports:
-      - 80:80
     environment:
       - NEXTAUTH_URL=http://localhost:80
       - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8000
