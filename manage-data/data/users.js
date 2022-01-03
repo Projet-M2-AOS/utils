@@ -1,5 +1,16 @@
 export default [
   {
+    _id: "61ce26eefc13ae417b002295",
+    firstName: "Admin",
+    lastName: "Admin",
+    mail: "admin",
+    password: "admin",
+    role: "ADMIN",
+    birthDate: "1999-09-18T21:21:33Z",
+    phoneNumber: "+86 415 563 8512",
+    address: "8 Admin",
+  },
+  {
     _id: "61ce26eefc13ae417b002296",
     firstName: "Ferne",
     lastName: "Straun",
