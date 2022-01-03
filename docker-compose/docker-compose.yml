@@ -148,7 +148,7 @@ services:
     restart: always
     environment:
       - NEXTAUTH_URL=https://www.aos-shop.ovh
-      - NEXT_PUBLIC_GATEWAY_URL=https://www.aos-shop.ovh:8000
+      - NEXT_PUBLIC_GATEWAY_URL=http://www.aos-shop.ovh:8000
       - JWT_SECRET=B9827D4B21956C48A68C0DF76EAEE7CFA1350A7F27A080E01273FD71E5D23003
       - VIRTUAL_HOST=www.aos-shop.ovh
       - LETSENCRYPT_HOST=www.aos-shop.ovh
