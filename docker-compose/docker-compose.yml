@@ -155,11 +155,13 @@ services:
 
   docs:
     image: nginx:alpine
-    volumes:
-    - ./html:/usr/share/nginx/html
+    container_name: docs
+    restart: always
     environment:
     - VIRTUAL_HOST=docs.aos-shop.ovh
     - LETSENCRYPT_HOST=docs.aos-shop.ovh
+    volumes:
+    - ./html:/usr/share/nginx/html
 #endregion Front
 
 #region Database

@@ -145,13 +145,16 @@ services:
       - JWT_SECRET=B9827D4B21956C48A68C0DF76EAEE7CFA1350A7F27A080E01273FD71E5D23003
       - VIRTUAL_HOST=www.aos-shop.ovh
       - LETSENCRYPT_HOST=www.aos-shop.ovh
+      
   docs:
     image: nginx:alpine
-    volumes:
-    - ./html:/usr/share/nginx/html
+    container_name: docs
+    restart: always
     environment:
     - VIRTUAL_HOST=docs.aos-shop.ovh
     - LETSENCRYPT_HOST=docs.aos-shop.ovh
+    volumes:
+    - ./html:/usr/share/nginx/html
 #endregion Front
 
 #region Database
